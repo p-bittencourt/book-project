@@ -1,7 +1,5 @@
 namespace db;
 
-
-
 using { cuid, managed, Country } from '@sap/cds/common';
 aspect primary : cuid, managed {}
 
