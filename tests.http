@@ -1,0 +1,9 @@
+### Create an Author
+POST http://localhost:4004/odata/v4/book-rater/Authors
+Content-Type: application/json
+
+{
+  "name": "Ada Lovelace",
+  "country_code": "GB",
+  "dateOfBirth": "1815-12-10"
+}
