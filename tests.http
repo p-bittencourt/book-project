@@ -1,3 +1,9 @@
+### GET BOOKS
+GET http://localhost:4004/odata/v4/book-rater/Books
+
+### GET AUTHORS
+GET  http://localhost:4004/odata/v4/book-rater/Authors
+
 ### Create an Author
 POST http://localhost:4004/odata/v4/book-rater/Authors
 Content-Type: application/json
