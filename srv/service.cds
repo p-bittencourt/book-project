@@ -18,6 +18,6 @@ service BookRater {
         }
         order by name asc;
 
-    action rateBook(bookId: String, rating: db.Ratings: rating, comment: db.Ratings: comment);
+    action rateBook(bookId: Books:ID, rating: db.Ratings: rating, comment: db.Ratings: comment);
 
 }
