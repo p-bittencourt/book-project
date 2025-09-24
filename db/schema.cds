@@ -49,7 +49,8 @@ entity Authors : primary {
  */
 
 @cds.autoexpose entity Ratings : cuid {
-    book    : Association to Books @assert.target;
+    // How will these annotations work considering that Ratings will be added via Actions?
+    book    : Association to Books @assert.target; 
     rating  : Integer @assert.range: [1, 5];
     comment : String;
     // author : Association to ExternalBusinessPartner;

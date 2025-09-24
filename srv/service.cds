@@ -17,5 +17,7 @@ service BookRater {
             modifiedBy
         }
         order by name asc;
-    // entity Ratings as projection on db.Ratings; 
+
+    action rateBook(bookId: String, rating: db.Ratings: rating, comment: db.Ratings: comment);
+
 }

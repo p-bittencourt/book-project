@@ -13,3 +13,13 @@ Content-Type: application/json
   "country_code": "GB",
   "dateOfBirth": "1815-12-10"
 }
+
+### POST book rating
+POST  http://localhost:4004/odata/v4/book-rater/rateBook
+Content-Type: application/json
+
+{
+  "bookId": "4c3b2a1f-9e8d-7c6b-b5a4f-3e2d1c0b9a8f",
+  "rating": 5,
+  "comment": "good"
+}
