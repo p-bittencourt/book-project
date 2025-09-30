@@ -50,8 +50,9 @@ entity Authors : primary {
 
 @cds.autoexpose entity Ratings : cuid {
     // How will these annotations work considering that Ratings will be added via Actions?
+    // -> range and mandatory worked fine, but @assert.target didn't.
     book    : Association to Books @assert.target; 
-    rating  : Integer @assert.range: [1, 5];
+    rating  : Integer @mandatory @assert.range: [1, 5];
     comment : String;
     // author : Association to ExternalBusinessPartner;
 }

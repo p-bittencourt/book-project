@@ -1,6 +1,9 @@
 ### GET BOOKS
 GET http://localhost:4004/odata/v4/book-rater/Books
 
+### GET specific book
+GET http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f)
+
 ### GET AUTHORS
 GET  http://localhost:4004/odata/v4/book-rater/Authors
 
@@ -14,12 +17,21 @@ Content-Type: application/json
   "dateOfBirth": "1815-12-10"
 }
 
-### POST book rating
-POST  http://localhost:4004/odata/v4/book-rater/rateBook
+### POST book rating (WHEN IT WAS UNBOUND)
+POST  http://localhost:4004/odata/v4/book-rater/Books.rateBook()
 Content-Type: application/json
 
 {
   "bookId": "4c3b2a1f9e8d7c6b5a4f3e2d1c0b9a8f",
+  "rating": 5,
+  "comment": "good"
+}
+
+### POST bound book rating
+POST http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f)/BookRater.rateBook
+Content-Type: application/json
+
+{
   "rating": 5,
   "comment": "good"
 }
