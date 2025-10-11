@@ -28,7 +28,7 @@ Content-Type: application/json
 }
 
 ### POST bound book rating
-POST http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f)/BookRater.rateBook
+POST http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f)/rateBook
 Content-Type: application/json
 
 {
