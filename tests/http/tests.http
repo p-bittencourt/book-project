@@ -10,6 +10,17 @@ GET http://localhost:4004/odata/v4/book-rater/Books?$select=ID,title,descr,avera
 ### GET specific book
 GET http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f)?$expand=Ratings
 
+### Add Rating to Existing Book (via Navigation)
+# @name Books_AddRating
+POST http://localhost:4004/odata/v4/book-rater/Books/4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f/Ratings
+Content-Type: application/json
+
+{
+  "pos": 1,
+  "rating": 5,
+  "comment": "Excellent book on lean methodologies!"
+}
+
 ### GET AUTHORS
 GET  http://localhost:4004/odata/v4/book-rater/Authors?expand=booksBy
 

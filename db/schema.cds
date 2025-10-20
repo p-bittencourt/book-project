@@ -21,10 +21,7 @@ entity Books : primary {
                             createdBy  : User       @cds.on.insert: $user;
                             modifiedAt : Timestamp  @cds.on.insert: $now   @cds.on.update: $now;
                             modifiedBy : User       @cds.on.insert: $user  @cds.on.update: $user;
-
                     }
-    // ratings       : Association to many Ratings
-    //                     on ratings.book = $self;
 
     /**
      * Managed Composition - https://cap.cloud.sap/docs/cds/cdl#for-many-to-many-relationships
