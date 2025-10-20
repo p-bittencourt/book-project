@@ -19,22 +19,30 @@ class BookRaterService extends cds.ApplicationService {
         })
 
         this.after(['CREATE', 'UPDATE'], 'Books.Ratings', async (_, req) => {
-            const book = await SELECT.from('Books', req.params[0], b => {
+            const bookId = req.params[0]
+            const book = await SELECT.from('Books', bookId, b => {
                 b('Ratings'),
                 b.Ratings(r => r('rating'))
             })
             const ratingValues = this.extractRatingValues(book.Ratings)
             const averageRating = this.calculateAverageRating(ratingValues)
-            logger(averageRating)
+
+            await UPDATE('Books', bookId).data({ averageRating })
         })
 
         return super.init()
     }
 
+    /**
+     * Receives an array of Rating entities and extract the rating value from each object in the array
+     */ 
     extractRatingValues(ratings) {
         return ratings.map(ratingValue => ratingValue.rating)
     }
 
+    /**
+     * Receives an array of rating values and calculates the average
+     */ 
     calculateAverageRating(ratings) {
         return ratings.length > 0 ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length : undefined;
     }

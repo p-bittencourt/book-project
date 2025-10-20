@@ -17,8 +17,8 @@ Content-Type: application/json
 
 
 {
-  "pos": 1,
-  "rating": 5,
+  "pos": 2,
+  "rating": 4,
   "comment": "Excellent book on lean methodologies!"
 }
 
