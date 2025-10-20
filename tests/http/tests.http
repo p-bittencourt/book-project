@@ -15,9 +15,10 @@ GET http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d
 POST http://localhost:4004/odata/v4/book-rater/Books/4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f/Ratings
 Content-Type: application/json
 
+
 {
-  "pos": 1,
-  "rating": 5,
+  "pos": 3,
+  "rating": 2,
   "comment": "Excellent book on lean methodologies!"
 }
 
