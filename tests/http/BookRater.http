@@ -19,7 +19,7 @@ Authorization: Basic {{username}}:{{password}}
   "ID": "42025009-16a9-4364-a2af-a249d7beeb8b",
   "title": "title-4202500",
   "descr": "descr-4202500",
-  "averageRating": 8,
+  // "averageRating": 8,
   "Ratings": [
     {
       "pos": 30729960,

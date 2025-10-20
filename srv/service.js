@@ -6,16 +6,27 @@ class BookRaterService extends cds.ApplicationService {
 
     async init() {
         this.on(['CREATE', 'UPDATE'], 'Books', (req, next) => {
-            logger(req);
+            const ratingsInput = req.query['INSERT'].entries[0].Ratings
+            let averageRating = null
+            if (ratingsInput && ratingsInput.length > 0) {
+                const ratings = ratingsInput.map(ratingValue => ratingValue.rating)
+                if (ratings) {
+                    averageRating = this.calculateAverageRating(ratings);
+                }
+            }
+            req.query['INSERT'].entries[0].averageRating = averageRating;
             return next();
         })
 
         this.on(['CREATE', 'UPDATE'], 'Books.Ratings', (req, next) => {
-            logger(req);
             return next();
         })
 
         return super.init()
+    }
+
+    calculateAverageRating(ratings) {
+        return ratings.length > 0 ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length : undefined;
     }
 
 }
