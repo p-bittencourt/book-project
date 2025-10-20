@@ -1,11 +1,16 @@
 ### GET BOOKS
 GET http://localhost:4004/odata/v4/book-rater/Books
 
+### GET BOOKS expand authors
+GET http://localhost:4004/odata/v4/book-rater/Books?$expand=authors
+
+### GET BOOKS expand authors name
+GET http://localhost:4004/odata/v4/book-rater/Books?$select=ID,title,descr,averageRating&$expand=authors($expand=author($select=name))
 ### GET specific book
 GET http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f)
 
 ### GET AUTHORS
-GET  http://localhost:4004/odata/v4/book-rater/Authors
+GET  http://localhost:4004/odata/v4/book-rater/Authors?expand=booksBy
 
 ### Create an Author
 POST http://localhost:4004/odata/v4/book-rater/Authors

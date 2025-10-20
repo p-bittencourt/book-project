@@ -48,7 +48,7 @@ entity Authors : primary {
  * entity is exposed. However, the autoexposed entity is readonly.
  */
 
-@cds.autoexpose entity Ratings : cuid {
+entity Ratings : cuid {
     /**
     * How will these annotations work considering that Ratings will be added via Actions?
     * -> range and mandatory worked fine, but @assert.target didn't. 

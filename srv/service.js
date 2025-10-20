@@ -1,11 +1,11 @@
 const cds = require('@sap/cds');
-const { SELECT } = require('@sap/cds/lib/ql/cds-ql');
+const { SELECT, UPDATE, CREATE, INSERT } = require('@sap/cds/lib/ql/cds-ql');
 const logger = cds.log('BookRaterService')
 
 class BookRaterService extends cds.ApplicationService {
 
     async init() {
-        const { Books } = this.entities;
+        const { Books, Ratings } = this.entities;
 
         this.on('rateBook', Books, (req) => rateBook(req))
 
@@ -31,13 +31,25 @@ class BookRaterService extends cds.ApplicationService {
                     }
                 }
              */
-            const book = await SELECT.one().from(Books).where({ID: ID})
 
-            if (!book) {
-                logger('Book not found')
-            }
+            
+            const rating_id = 213142 
 
-            logger(rating, comment)
+            const ratingObject = {
+                ID: rating_id,
+                book_id: ID, // provide trimmed book id?
+                rating,
+                comment
+            };
+
+            // const persistedRating = await INSERT(ratingObject).into(Ratings)
+            // const persistedRating = await CREATE.entity(Ratings, ratingObject);
+
+            const insert = await INSERT.into(Ratings, ratingObject);
+            const obj_id = insert.results[0].lastInsertRowid
+            const persistedRating = await SELECT(Ratings, obj_id);
+
+            logger(persistedRating);
         }
 
         return super.init()
