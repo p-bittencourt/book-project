@@ -5,30 +5,34 @@ const logger = cds.log('BookRaterService')
 class BookRaterService extends cds.ApplicationService {
 
     async init() {
-        this.on(['CREATE', 'UPDATE'], 'Books', (_, next) => {
+        this.on(['CREATE', 'UPDATE'], 'Books', (req, next) => {
             const ratingsInput = req.query['INSERT'].entries[0].Ratings
             let averageRating = null
             if (ratingsInput && ratingsInput.length > 0) {
-                const ratings = ratingsInput.map(ratingValue => ratingValue.rating)
-                if (ratings) {
-                    averageRating = this.calculateAverageRating(ratings);
+                const ratingValues = this.extractRatingValues(ratingsInput)
+                if (ratingValues) {
+                    averageRating = this.calculateAverageRating(ratingValues);
                 }
             }
             req.query['INSERT'].entries[0].averageRating = averageRating;
             return next();
         })
 
-        this.after(['CREATE', 'UPDATE'], 'Books.Ratings', async (results, req) => {
+        this.after(['CREATE', 'UPDATE'], 'Books.Ratings', async (_, req) => {
             const book = await SELECT.from('Books', req.params[0], b => {
                 b('Ratings'),
                 b.Ratings(r => r('rating'))
             })
-            const ratingValues = book.Ratings.map(ratingValue => ratingValue.rating)
+            const ratingValues = this.extractRatingValues(book.Ratings)
             const averageRating = this.calculateAverageRating(ratingValues)
             logger(averageRating)
         })
 
         return super.init()
+    }
+
+    extractRatingValues(ratings) {
+        return ratings.map(ratingValue => ratingValue.rating)
     }
 
     calculateAverageRating(ratings) {
