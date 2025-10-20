@@ -6,6 +6,7 @@ class BookRaterService extends cds.ApplicationService {
 
     async init() {
         this.on(['CREATE', 'UPDATE'], 'Books', (req, next) => {
+            // Handle ratings on POST Books payload
             const ratingsInput = req.query['INSERT'].entries[0].Ratings
             let averageRating = null
             if (ratingsInput && ratingsInput.length > 0) {
@@ -37,7 +38,7 @@ class BookRaterService extends cds.ApplicationService {
      * Receives an array of Rating entities and extract the rating value from each object in the array
      */ 
     extractRatingValues(ratings) {
-        return ratings.map(ratingValue => ratingValue.rating)
+        return ratings.length > 0 ? ratings.map(ratingValue => ratingValue.rating) : undefined;
     }
 
     /**
