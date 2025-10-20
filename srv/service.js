@@ -5,7 +5,7 @@ const logger = cds.log('BookRaterService')
 class BookRaterService extends cds.ApplicationService {
 
     async init() {
-        this.on(['CREATE', 'UPDATE'], 'Books', (req, next) => {
+        this.on(['CREATE', 'UPDATE'], 'Books', (_, next) => {
             const ratingsInput = req.query['INSERT'].entries[0].Ratings
             let averageRating = null
             if (ratingsInput && ratingsInput.length > 0) {
