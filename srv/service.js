@@ -5,54 +5,34 @@ const logger = cds.log('BookRaterService')
 class BookRaterService extends cds.ApplicationService {
 
     async init() {
-        const { Books, Ratings } = this.entities;
-
-        this.on('rateBook', Books, (req) => rateBook(req))
-
-        /**
-         * We should validate that the book exists then register the rating.
-         *  
-         * Book averageRating should reflect the change.
-         * Should this be done on an after handler maybe?
-         * 
-         */
-        async function rateBook(req) {
-            const { ID }  = req.params[0];
-            const { rating, comment } = req.data;
-
-            /**
-             * What's the try catch block to handle this:
-             * 
-             * {
-                    "error": {
-                        "message": "near \"\"$B\"\": syntax error in:\nSELECT json_insert('{}','$.\"ID\"',ID,'$.\"title\"',title,'$.\"descr\"',descr,'$.\"averageRating\"',averageRating) as _json_ FROM (SELECT \"$B\".ID,\"$B\".title,\"$B\".descr,\"$B\".averageRating FROM BookRater_Books as \"$B\" WHERE \"$B\".ID \"$B\".ID = ?)",
-                        "code": "SQLITE_ERROR",
-                        "@Common.numericSeverity": 4
-                    }
+        this.on(['CREATE', 'UPDATE'], 'Books', (req, next) => {
+            const ratingsInput = req.query['INSERT'].entries[0].Ratings
+            let averageRating = null
+            if (ratingsInput && ratingsInput.length > 0) {
+                const ratings = ratingsInput.map(ratingValue => ratingValue.rating)
+                if (ratings) {
+                    averageRating = this.calculateAverageRating(ratings);
                 }
-             */
+            }
+            req.query['INSERT'].entries[0].averageRating = averageRating;
+            return next();
+        })
 
-            
-            const rating_id = 213142 
-
-            const ratingObject = {
-                ID: rating_id,
-                book_id: ID, // provide trimmed book id?
-                rating,
-                comment
-            };
-
-            // const persistedRating = await INSERT(ratingObject).into(Ratings)
-            // const persistedRating = await CREATE.entity(Ratings, ratingObject);
-
-            const insert = await INSERT.into(Ratings, ratingObject);
-            const obj_id = insert.results[0].lastInsertRowid
-            const persistedRating = await SELECT(Ratings, obj_id);
-
-            logger(persistedRating);
-        }
+        this.after(['CREATE', 'UPDATE'], 'Books.Ratings', async (results, req) => {
+            const book = await SELECT.from('Books', req.params[0], b => {
+                b('Ratings'),
+                b.Ratings(r => r('rating'))
+            })
+            const ratingValues = book.Ratings.map(ratingValue => ratingValue.rating)
+            const averageRating = this.calculateAverageRating(ratingValues)
+            logger(averageRating)
+        })
 
         return super.init()
+    }
+
+    calculateAverageRating(ratings) {
+        return ratings.length > 0 ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length : undefined;
     }
 
 }

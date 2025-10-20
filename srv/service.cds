@@ -9,10 +9,10 @@ service BookRater {
             modifiedAt,
             modifiedBy
         } 
-        order by title asc
-        actions {
-            action rateBook(rating: db.Ratings: rating, comment: db.Ratings: comment);
-        };
+        order by title asc;
+        // actions {
+        //     action rateBook(rating: db.Ratings: rating, comment: db.Ratings: comment);
+        // };
 
     entity Authors as projection on db.Authors
         excluding {
