@@ -1,0 +1,157 @@
+@server=http://localhost:4004
+@username=alice
+@password=
+
+
+### Books
+# @name Books_GET
+GET {{server}}/odata/v4/book-rater/Books
+Authorization: Basic {{username}}:{{password}}
+
+
+### Books
+# @name Books_POST
+POST {{server}}/odata/v4/book-rater/Books
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "ID": "42025009-16a9-4364-a2af-a249d7beeb8b",
+  "title": "title-4202500",
+  "descr": "descr-4202500",
+  "averageRating": 8,
+  "Ratings": [
+    {
+      "pos": 30729960,
+      "rating": 4,
+      "comment": "comment-30729960",
+      "createdAt": "2018-07-18T00:00:00.000Z",
+      "createdBy": "createdBy.iane0@example.net",
+      "modifiedAt": "2008-12-07T00:00:00.000Z",
+      "modifiedBy": "modifiedBy.iane0@example.net"
+    },
+    {
+      "pos": 30729961,
+      "rating": 5,
+      "comment": "comment-30729961",
+      "createdAt": "2017-05-21T00:00:00.000Z",
+      "createdBy": "createdBy.iane1@example.com",
+      "modifiedAt": "2021-04-17T00:00:00.000Z",
+      "modifiedBy": "modifiedBy.iane1@example.com"
+    }
+  ],
+  "authors": [
+    {
+      "author": {
+        "ID": "12316263-9af6-4bab-8295-2ec94eeaeb05"
+      }
+    }
+  ]
+}
+
+
+### Books
+# @name Books_PATCH
+PATCH {{server}}/odata/v4/book-rater/Books/42025009-16a9-4364-a2af-a249d7beeb8b
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "ID": "42025009-16a9-4364-a2af-a249d7beeb8b",
+  "title": "title-4202500",
+  "descr": "descr-4202500",
+  "averageRating": 8,
+  "Ratings": [
+    {
+      "pos": 30729960,
+      "rating": 4,
+      "comment": "comment-30729960",
+      "createdAt": "2018-07-18T00:00:00.000Z",
+      "createdBy": "createdBy.iane0@example.net",
+      "modifiedAt": "2008-12-07T00:00:00.000Z",
+      "modifiedBy": "modifiedBy.iane0@example.net"
+    },
+    {
+      "pos": 30729961,
+      "rating": 5,
+      "comment": "comment-30729961",
+      "createdAt": "2017-05-21T00:00:00.000Z",
+      "createdBy": "createdBy.iane1@example.com",
+      "modifiedAt": "2021-04-17T00:00:00.000Z",
+      "modifiedBy": "modifiedBy.iane1@example.com"
+    }
+  ],
+  "authors": [
+    {
+      "author": {
+        "ID": "12316263-9af6-4bab-8295-2ec94eeaeb05"
+      }
+    }
+  ]
+}
+
+
+### Books
+# @name Books_DELETE
+DELETE {{server}}/odata/v4/book-rater/Books/42025009-16a9-4364-a2af-a249d7beeb8b
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+
+### Authors
+# @name Authors_GET
+GET {{server}}/odata/v4/book-rater/Authors
+Authorization: Basic {{username}}:{{password}}
+
+
+### Authors
+# @name Authors_POST
+POST {{server}}/odata/v4/book-rater/Authors
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "ID": "12316263-9af6-4bab-8295-2ec94eeaeb05",
+  "name": "name-12316263",
+  "country": {
+    "code": "050"
+  },
+  "dateOfBirth": "2001-11-15",
+  "dateOfDeath": "2018-11-17"
+}
+
+
+### Authors
+# @name Authors_PATCH
+PATCH {{server}}/odata/v4/book-rater/Authors/12316263-9af6-4bab-8295-2ec94eeaeb05
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "ID": "12316263-9af6-4bab-8295-2ec94eeaeb05",
+  "name": "name-12316263",
+  "country": {
+    "code": "050"
+  },
+  "dateOfBirth": "2001-11-15",
+  "dateOfDeath": "2018-11-17"
+}
+
+
+### Authors
+# @name Authors_DELETE
+DELETE {{server}}/odata/v4/book-rater/Authors/12316263-9af6-4bab-8295-2ec94eeaeb05
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+### Add Rating to Existing Book (via Navigation)
+# @name Books_AddRating
+POST {{server}}/odata/v4/book-rater/Books/4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f/Ratings
+Content-Type: application/json
+Authorization: Basic {{username}}:{{password}}
+
+{
+  "pos": 1,
+  "rating": 5,
+  "comment": "Excellent book on lean methodologies!"
+}

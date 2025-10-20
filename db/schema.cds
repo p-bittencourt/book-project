@@ -3,7 +3,8 @@ namespace db;
 using {
     cuid,
     managed,
-    Country
+    Country,
+    User
 } from '@sap/cds/common';
 
 aspect primary : cuid, managed {}
@@ -12,8 +13,18 @@ entity Books : primary {
     title         : String @mandatory;
     descr         : String default 'Short book description';
     averageRating : Integer null;
-    ratings       : Association to many Ratings
-                        on ratings.book = $self;
+    Ratings       : Composition of many {
+                        key pos        : Integer;
+                            rating     : Integer    @mandatory @assert.range : [1, 5];
+                            comment    : String;
+                            createdAt  : Timestamp  @cds.on.insert: $now;
+                            createdBy  : User       @cds.on.insert: $user;
+                            modifiedAt : Timestamp  @cds.on.insert: $now   @cds.on.update: $now;
+                            modifiedBy : User       @cds.on.insert: $user  @cds.on.update: $user;
+
+                    }
+    // ratings       : Association to many Ratings
+    //                     on ratings.book = $self;
 
     /**
      * Managed Composition - https://cap.cloud.sap/docs/cds/cdl#for-many-to-many-relationships
@@ -41,20 +52,4 @@ entity Authors : primary {
     dateOfDeath : Date;
     booksBy     : Association to many Books.authors
                       on booksBy.author = $self;
-}
-
-/**
- * Autoexpose exposes the entity whenever a parent
- * entity is exposed. However, the autoexposed entity is readonly.
- */
-
-entity Ratings : cuid {
-    /**
-    * How will these annotations work considering that Ratings will be added via Actions?
-    * -> range and mandatory worked fine, but @assert.target didn't. 
-    */
-    book    : Association to Books @assert.target; 
-    rating  : Integer @mandatory @assert.range: [1, 5];
-    comment : String;
-    // author : Association to ExternalBusinessPartner;
 }
