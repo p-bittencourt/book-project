@@ -22,8 +22,32 @@ Content-Type: application/json
   "comment": "Excellent book on lean methodologies!"
 }
 
+### POST Book with author reference
+POST http://localhost:4004/odata/v4/book-rater/Books
+Content-Type: application/json
+
+{
+  "title": "The Infinite Game",
+  "authors": [
+    {
+      "author": {
+        "ID": "d1a3f8b4-6c2e-4a9f-b2e7-2a3c4d5e6f70"
+      }
+    }
+  ],
+  "Ratings": [
+    {
+      "pos": 1,
+      "rating": 4,
+      "comment": "Good blend of concepts and practice"
+    }
+  ]
+}
+
+
+
 ### GET AUTHORS
-GET  http://localhost:4004/odata/v4/book-rater/Authors?expand=booksBy
+GET http://localhost:4004/odata/v4/book-rater/Authors?$expand=booksBy($expand=up_)
 
 ### Create an Author
 POST http://localhost:4004/odata/v4/book-rater/Authors
