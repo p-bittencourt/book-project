@@ -1,0 +1,139 @@
+### ==========================================================
+### VARIABLES
+### ==========================================================
+@server = http://localhost:4004/odata/v4/book-rater
+@trimmed-server = http://localhost:4004/odata/v4/book-rater-trimmed
+# The Lean Startup
+@bookId = 4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f
+# Simon Sinek
+@authorId = d1a3f8b4-6c2e-4a9f-b2e7-2a3c4d5e6f70
+# Refactoring
+@deleteBookId = 2f3e4d5c-6b7a-8c9d-0e1f-2a3b4c5d6e7f
+# Eric Ries
+@deleteAuthorId = 9f7b2c6e-3e4b-4e7a-9a1b-1f2d3c4b5a6d
+
+
+### ==========================================================
+### AUTHORS
+### ==========================================================
+
+### ▶️ GET All Authors
+GET {{server}}/Authors
+
+### ▶️ GET Specific Author (expand their books)
+GET {{server}}/Authors({{deleteAuthorId}})?$expand=booksBy($expand=up_)
+
+### ➕ Create Author
+POST {{server}}/Authors
+Content-Type: application/json
+
+{
+  "name": "Ada Lovelace",
+  "country_code": "GB",
+  "dateOfBirth": "1815-12-10"
+}
+
+### ❌ DELETE Author
+DELETE {{server}}/Authors({{deleteAuthorId}})
+
+
+
+### ==========================================================
+### BOOKS
+### ==========================================================
+
+### ▶️ GET All Books
+GET {{server}}/Books
+
+### ▶️ GET Books with Authors Expanded
+GET {{server}}/Books?$expand=authors
+
+### ▶️ GET Books with Selected Author Fields
+GET {{server}}/Books?$select=ID,title,descr,averageRating&$expand=authors($expand=author($select=name))
+
+### ▶️ GET Specific Book with Ratings and Authors
+GET {{server}}/Books({{bookId}})?$expand=Ratings,authors($expand=author($select=name))
+
+### ➕ Create Book (with Author Reference and Rating)
+POST {{server}}/Books
+Content-Type: application/json
+
+{
+  "title": "The Infinite Game",
+  "authors": [
+    {
+      "author": {
+        "ID": "{{authorId}}"
+      }
+    }
+  ],
+  "Ratings": [
+    {
+      "pos": 1,
+      "rating": 4,
+      "comment": "Good blend of concepts and practice"
+    }
+  ]
+}
+
+### ❌ DELETE Book
+DELETE {{server}}/Books({{deleteBookId}})
+
+
+
+### ==========================================================
+### RATINGS
+### ==========================================================
+
+### ➕ Add Rating to Existing Book (via Navigation)
+POST {{server}}/Books/{{bookId}}/Ratings
+Content-Type: application/json
+
+{
+  "pos": 1,
+  "rating": 5,
+  "comment": "Excellent book on lean methodologies!"
+}
+
+### ▶️ GET Ratings (if available)
+GET {{server}}/Books({{bookId}})/Ratings
+
+### (Legacy) Unbound Rating Tests (deprecated)
+# POST {{server}}/Books.rateBook()
+# POST {{server}}/Books({{bookId}})/rateBook
+
+
+
+### ==========================================================
+### RELATIONSHIPS (LINKS)
+### ==========================================================
+
+### ➕ Associate Existing Book to Existing Author
+POST {{server}}/Books({{bookId}})/authors
+Content-Type: application/json
+
+{
+  "author_ID": "{{authorId}}"
+}
+
+### ==========================================================
+### TRIMMED SERVICE
+### ==========================================================
+
+### ▶️ GET All Authors
+GET {{trimmed-server}}/AuthorsTrimmed
+
+### GET All Books
+GET {{trimmed-server}}/Books
+
+### GET All Books
+GET {{trimmed-server}}/Books?$expand=authors($expand=author),Ratings
+
+
+
+### ==========================================================
+### HOUSEKEEPING
+### ==========================================================
+
+### ▶️ Service Root (for quick check)
+GET {{server}}/
