@@ -1,6 +1,7 @@
 using { db } from '../db/schema';
 
 service BookRaterTrimmed {
+    @readonly
     entity Books as projection on db.Books {
         ID,
         title,
@@ -10,6 +11,7 @@ service BookRaterTrimmed {
         Ratings : redirected to RatingsTrimmed
     }
 
+    @readonly
     entity AuthorsTrimmed as projection on db.Books.authors {
         @cds.api.ignore
         up_ : redirected to Books,
@@ -19,8 +21,8 @@ service BookRaterTrimmed {
     }
 
     entity RatingsTrimmed as projection on db.Books.Ratings {
-        @cds.api.ignore
         up_ : redirected to Books,
+        pos,
         rating,
         comment
     }

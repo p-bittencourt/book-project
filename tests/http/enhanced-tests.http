@@ -129,6 +129,38 @@ GET {{trimmed-server}}/Books
 ### GET All Books
 GET {{trimmed-server}}/Books({{bookId}})?$expand=authors($expand=author),Ratings
 
+### ➕ Create Book (with Author Reference and Rating)
+# This should be blocked by @readonly annotation
+POST {{trimmed-server}}/Books
+Content-Type: application/json
+
+{
+  "title": "The Infinite Game",
+  "authors": [
+    {
+      "author": {
+        "ID": "{{authorId}}"
+      }
+    }
+  ],
+  "Ratings": [
+    {
+      "pos": 1,
+      "rating": 4,
+      "comment": "Good blend of concepts and practice"
+    }
+  ]
+}
+
+### ➕ Add Rating to Existing Book (via Navigation)
+POST {{trimmed-server}}/Books/{{bookId}}/Ratings
+Content-Type: application/json
+
+{
+  "pos": 1,
+  "rating": 5,
+  "comment": "Excellent book on lean methodologies!"
+}
 
 
 ### ==========================================================
