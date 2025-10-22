@@ -127,7 +127,7 @@ GET {{trimmed-server}}/AuthorsTrimmed
 GET {{trimmed-server}}/Books
 
 ### GET All Books
-GET {{trimmed-server}}/Books?$expand=authors($expand=author),Ratings
+GET {{trimmed-server}}/Books({{bookId}})?$expand=authors($expand=author),Ratings
 
 
 

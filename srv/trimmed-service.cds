@@ -11,11 +11,15 @@ service BookRaterTrimmed {
     }
 
     entity AuthorsTrimmed as projection on db.Books.authors {
+        @cds.api.ignore
         up_ : redirected to Books,
+
+        @cds.api.ignore
         author : redirected to AuthorCore
     }
 
     entity RatingsTrimmed as projection on db.Books.Ratings {
+        @cds.api.ignore
         up_ : redirected to Books,
         rating,
         comment
@@ -23,7 +27,6 @@ service BookRaterTrimmed {
 
     entity AuthorCore as projection on db.Authors {
         ID,
-        name,
-        @cds.api.ignore booksBy
+        name
     }
 }
