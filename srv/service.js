@@ -7,25 +7,26 @@ const { extractRatingValues, calculateAverageRating } = require('./utils/utils')
 class BookRaterService extends cds.ApplicationService {
 
     async init() {
+
+        this.before(['CREATE'], ['Books.Ratings', 'RatingsTrimmed'], async (req) => {
+            logger(req)
+        })
+
         this.on(['CREATE', 'UPDATE'], 'Books', (req, next) => {
             // Handle ratings on POST Books payload
-            const ratingsInput = req.query['INSERT'].entries[0].Ratings
+            const ratingsObject = req.data.Ratings
             let averageRating = null
-            if (ratingsInput && ratingsInput.length > 0) {
-                const ratingValues = extractRatingValues(ratingsInput)
+            if (ratingsObject && ratingsObject.length > 0) {
+                const ratingValues = extractRatingValues(ratingsObject)
                 if (ratingValues) {
                     averageRating = calculateAverageRating(ratingValues);
                 }
             }
-            req.query['INSERT'].entries[0].averageRating = averageRating;
+            req.data.averageRating = averageRating;
             return next();
         })
 
-        this.after(['CREATE', 'UPDATE'], 'Books.Ratings', async (_, req) => {
-            await this.updateBookRating(req)
-        })
-
-        this.after(['CREATE', 'UPDATE'], 'RatingsTrimmed', async (_, req) => {
+        this.after(['CREATE', 'UPDATE'], ['Books.Ratings', 'RatingsTrimmed'], async (_, req) => {
             await this.updateBookRating(req)
         })
 
