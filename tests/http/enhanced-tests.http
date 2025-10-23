@@ -59,7 +59,7 @@ POST {{server}}/Books
 Content-Type: application/json
 
 {
-  "title": "The Infinite Game",
+  "title": "The Infinite Game 2",
   "authors": [
     {
       "author": {
@@ -69,9 +69,13 @@ Content-Type: application/json
   ],
   "Ratings": [
     {
-      "pos": 1,
+      // "pos": 1,
       "rating": 4,
       "comment": "Good blend of concepts and practice"
+    },
+    {
+      // "pos": 2,
+      "rating": 5
     }
   ]
 }
@@ -90,7 +94,7 @@ POST {{server}}/Books/{{bookId}}/Ratings
 Content-Type: application/json
 
 {
-  "pos": 1,
+  // "pos": 1,
   "rating": 5,
   "comment": "Excellent book on lean methodologies!"
 }
@@ -137,7 +141,7 @@ POST {{trimmed-server}}/Books/{{bookId}}/Ratings
 Content-Type: application/json
 
 {
-  "pos": 1,
+  // "pos": 1,
   "rating": 5,
   "comment": "Excellent book on lean methodologies!"
 }

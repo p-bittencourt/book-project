@@ -12,11 +12,14 @@ class BookRaterService extends cds.ApplicationService {
             req.data.pos = pos
         })
 
-        this.on(['CREATE', 'UPDATE'], 'Books', (req, next) => {
+        this.on(['CREATE'], 'Books', (req, next) => {
             // Handle ratings on POST Books payload
             const ratingsObject = req.data.Ratings
             let averageRating = null
             if (ratingsObject && ratingsObject.length > 0) {
+                for (let i = 0; i < ratingsObject.length; i++) {
+                    req.data.Ratings[i].pos = i + 1;
+                }
                 const ratingValues = extractRatingValues(ratingsObject)
                 if (ratingValues) {
                     averageRating = calculateAverageRating(ratingValues);
@@ -25,6 +28,10 @@ class BookRaterService extends cds.ApplicationService {
             req.data.averageRating = averageRating;
             return next();
         })
+
+        // TODO: Implement UPDATE handler for Books
+        // If the Books is being patched along with Ratings, block the ratings from being updated
+        // Return an error or just clear the Ratings from the req?
 
         this.after(['CREATE', 'UPDATE'], ['Books.Ratings', 'RatingsTrimmed'], async (_, req) => {
             await this.updateBookRating(req)
