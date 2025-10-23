@@ -127,7 +127,20 @@ GET {{trimmed-server}}/AuthorsTrimmed
 GET {{trimmed-server}}/Books
 
 ### GET All Books
+GET {{trimmed-server}}/Books?$expand=authors($expand=author),Ratings
+
+### GET Single book
 GET {{trimmed-server}}/Books({{bookId}})?$expand=authors($expand=author),Ratings
+
+### ➕ Add Rating to Existing Book (via Navigation)
+POST {{trimmed-server}}/Books/{{bookId}}/Ratings
+Content-Type: application/json
+
+{
+  "pos": 1,
+  "rating": 5,
+  "comment": "Excellent book on lean methodologies!"
+}
 
 ### ➕ Create Book (with Author Reference and Rating)
 # This should be blocked by @readonly annotation
@@ -151,17 +164,6 @@ Content-Type: application/json
     }
   ]
 }
-
-### ➕ Add Rating to Existing Book (via Navigation)
-POST {{trimmed-server}}/Books/{{bookId}}/Ratings
-Content-Type: application/json
-
-{
-  "pos": 1,
-  "rating": 5,
-  "comment": "Excellent book on lean methodologies!"
-}
-
 
 ### ==========================================================
 ### HOUSEKEEPING

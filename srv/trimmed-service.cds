@@ -1,5 +1,6 @@
 using { db } from '../db/schema';
 
+@impl: './service.js'
 service BookRaterTrimmed {
     @readonly
     entity Books as projection on db.Books {
