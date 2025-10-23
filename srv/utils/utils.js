@@ -2,7 +2,7 @@
  * Receives an array of Rating entities and extract the rating value from each object in the array
  */ 
 function extractRatingValues(ratings) {
-    return ratings.length > 0 ? ratings.map(ratingValue => ratingValue.rating) : undefined;
+    return ratings.length > 0 ? ratings.map(ratingObject => ratingObject.rating) : undefined;
 }
 
 /**

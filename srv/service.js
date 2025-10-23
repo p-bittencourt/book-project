@@ -7,9 +7,19 @@ const { extractRatingValues, calculateAverageRating } = require('./utils/utils')
 class BookRaterService extends cds.ApplicationService {
 
     async init() {
-
         this.before(['CREATE'], ['Books.Ratings', 'RatingsTrimmed'], async (req) => {
-            logger(req)
+            const bookId = req.params[0]
+            const ratings = await SELECT.from('Books', bookId, b => {
+                b('Ratings'),
+                b.Ratings(r => r('pos'))
+            })
+            const ratingsLength = ratings.Ratings.length
+            let pos = 1
+            if (ratingsLength > 0) {
+                const latestPos = ratings.Ratings[ratingsLength - 1].pos
+                pos = latestPos + 1
+            }
+            req.data.pos = pos
         })
 
         this.on(['CREATE', 'UPDATE'], 'Books', (req, next) => {
