@@ -12,6 +12,12 @@ class BookRaterService extends cds.ApplicationService {
             req.data.pos = pos
         })
 
+        this.before('UPDATE', 'Books', (req) => {
+            if (req.data.Ratings) {
+                req.error(400, 'Ratings must be updated via the Books(:id)/Ratings endpoint.')
+            }
+        })
+
         this.on(['CREATE'], 'Books', (req, next) => {
             // Handle ratings on POST Books payload
             const ratingsObject = req.data.Ratings
@@ -28,10 +34,6 @@ class BookRaterService extends cds.ApplicationService {
             req.data.averageRating = averageRating;
             return next();
         })
-
-        // TODO: Implement UPDATE handler for Books
-        // If the Books is being patched along with Ratings, block the ratings from being updated
-        // Return an error or just clear the Ratings from the req?
 
         this.after(['CREATE', 'UPDATE'], ['Books.Ratings', 'RatingsTrimmed'], async (_, req) => {
             await this.updateBookRating(req)

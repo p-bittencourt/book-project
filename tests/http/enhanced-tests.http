@@ -59,7 +59,7 @@ POST {{server}}/Books
 Content-Type: application/json
 
 {
-  "title": "The Infinite Game 2",
+  "title": "The Infinite Game",
   "authors": [
     {
       "author": {
@@ -78,6 +78,14 @@ Content-Type: application/json
       "rating": 5
     }
   ]
+}
+
+### PATCH Book
+PATCH {{server}}/Books/{{bookId}}
+Content-Type: application/json
+
+{ 
+  "title": "Updated Lean Startup"
 }
 
 ### ❌ DELETE Book
