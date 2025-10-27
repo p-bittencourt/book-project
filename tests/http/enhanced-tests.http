@@ -89,7 +89,7 @@ Content-Type: application/json
 }
 
 ### ❌ DELETE Book
-DELETE {{server}}/Books({{deleteBookId}})
+DELETE {{server}}/Books({{bookId}})
 
 
 
