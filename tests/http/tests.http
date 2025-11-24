@@ -8,7 +8,7 @@ GET http://localhost:4004/odata/v4/book-rater/Books?$expand=authors
 GET http://localhost:4004/odata/v4/book-rater/Books?$select=ID,title,descr,averageRating&$expand=authors($expand=author($select=name))
 
 ### GET specific book
-GET http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f)?$expand=Ratings
+GET http://localhost:4004/odata/v4/book-rater/Books(4c3b2a1f-9e8d-7c6b-5a4f-3e2d1c0b9a8f)?$expand=Ratings,authors($expand=author($select=name))
 
 ### Add Rating to Existing Book (via Navigation)
 # @name Books_AddRating
@@ -44,10 +44,14 @@ Content-Type: application/json
   ]
 }
 
-
-
 ### GET AUTHORS
-GET http://localhost:4004/odata/v4/book-rater/Authors?$expand=booksBy($expand=up_)
+GET http://localhost:4004/odata/v4/book-rater/Authors(d1a3f8b4-6c2e-4a9f-b2e7-2a3c4d5e6f70)?$expand=booksBy($expand=up_)
+
+### DELETE a book
+DELETE http://localhost:4004/odata/v4/book-rater/Books(2f3e4d5c-6b7a-8c9d-0e1f-2a3b4c5d6e7f)
+
+### DELETE an author
+DELETE http://localhost:4004/odata/v4/book-rater/Authors(9f7b2c6e-3e4b-4e7a-9a1b-1f2d3c4b5a6d)
 
 ### Create an Author
 POST http://localhost:4004/odata/v4/book-rater/Authors
@@ -59,7 +63,13 @@ Content-Type: application/json
   "dateOfBirth": "1815-12-10"
 }
 
-### TODO: Create a book after having created the author
+### Associate exsting book to existing author
+POST http://localhost:4004/odata/v4/book-rater/Books(2f3e4d5c-6b7a-8c9d-0e1f-2a3b4c5d6e7f)/authors
+Content-Type: application/json
+
+{
+  "author_ID": "d1a3f8b4-6c2e-4a9f-b2e7-2a3c4d5e6f70"
+}
 
 ### POST Book Rating
 POST http://localhost:4004/odata/v4/book-rater/Books.Ratings

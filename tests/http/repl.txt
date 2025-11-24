@@ -1,0 +1,14 @@
+const Books = cds.entities['Books']
+await SELECT.from(Books)
+
+await SELECT.from(Books, b => {
+  b('*')
+  b.authors(a => a.author(au => au('*')))
+})
+
+await SELECT.from(Books, '<book-id>', b => {
+  b('*')
+  b.authors(a => a.author(au => au('ID','name')))
+})
+
+await DELETE.from('Books.authors').where({ author_ID: '9f7b2c6e-3e4b-4e7a-9a1b-1f2d3c4b5a6d' })
