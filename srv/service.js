@@ -40,11 +40,10 @@ class BookRaterService extends cds.ApplicationService {
         })
 
         this.after('DELETE', 'Authors', async (_, req) => {
-            const authorId = req.params[0]
-            logger.info(`Cleaning up book-author references for deleted author #${authorId}`)
+            const { ID } = req.params[0]
+            logger.info(`Cleaning up book-author references for deleted author #${ID}`)
 
-            const refs = await SELECT.from('db.Books.authors').where({ author_ID: authorId });
-            logger(refs)
+            await DELETE.from('db.Books.authors').where({ author_ID: ID });
         })
 
         return super.init()
